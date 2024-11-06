@@ -29,6 +29,8 @@ fun MainScreen(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
 
     ModalNavigationDrawer (
         drawerState = drawerState,
@@ -39,30 +41,73 @@ fun MainScreen(
                     "Settings",
                     modifier = Modifier.padding(32.dp),
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        fontSize = 20.sp,
+                        fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
                 )
                 var isChecked by remember { mutableStateOf(false) }
+                var showDialog by remember { mutableStateOf(false) }
+                var permissionRequested by remember { mutableStateOf(false) }
                 NavigationDrawerItem(
                     label = {
                         Row{
                             Checkbox(
                                 checked = isChecked,
-                                onCheckedChange = {isChecked = it},
+                                onCheckedChange = { checked ->
+                                    isChecked = checked
+                                    if(checked && !permissionRequested) {
+                                        showDialog = true
+                                        permissionRequested = true
+                                    }
+                                },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
-                            Text(text = "Notifications")
+                            Text(
+                                text = "Notifications",
+                                modifier = Modifier.padding(12.dp),
+                                fontSize = 20.sp
+                            )
                         }
                          },
                     selected = false,
-                    onClick = {/*TODO*/}
+                    onClick = {}
                 )
+                if(showDialog) {
+                    AlertDialog(
+                        onDismissRequest = {showDialog = false},
+                        title = {Text(text = "Allow BookStore to send you notifications?")},
+                        confirmButton = {
+                            TextButton(onClick = {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = "This is a notification!",
+                                    )
+                                }
+                                showDialog = false
+                            }) {
+                                Text("Allow")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                showDialog = false
+                                permissionRequested = false
+                            }) {
+                                Text("Deny")
+                            }
+                        }
+                    )
+                }
             }
         }
     ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 BookList()
+                SnackbarHost(
+                    hostState = snackbarHostState,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                )
                 FloatingActionButton(
                     onClick = {
                         scope.launch {
