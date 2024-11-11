@@ -1,4 +1,4 @@
-package com.example.bookstorefrontend
+package com.example.bookstorefrontend.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,13 +22,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bookstorefrontend.api.details.DetailsModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsAndReviews(
     isOpen: Boolean,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    details: DetailsModel?
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
@@ -50,13 +52,41 @@ fun DetailsAndReviews(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Book",
+                    text = "About the Book",
                     style = TextStyle(fontSize = 24.sp, color = Color.Black, fontWeight = FontWeight.Bold)
                 )
-                Text(
-                    text = "Details",
-                    style = TextStyle(fontSize = 18.sp, color = Color.Black)
-                )
+                if (details != null) {
+                    Text(
+                        text = "Author: ${details.author}",
+                        style = TextStyle(fontSize = 18.sp, color = Color.Black)
+                    )
+                    Text(
+                        text = "Year: ${details.year}",
+                        style = TextStyle(fontSize = 18.sp, color = Color.Black)
+                    )
+                    Text(
+                        text = "Type: ${details.type}",
+                        style = TextStyle(fontSize = 18.sp, color = Color.Black)
+                    )
+                    Text(
+                        text = "Publisher: ${details.publisher}",
+                        style = TextStyle(fontSize = 18.sp, color = Color.Black)
+                    )
+                    Text(
+                        text = "Language: ${details.language}",
+                        style = TextStyle(fontSize = 18.sp, color = Color.Black)
+                    )
+                    Text(
+                        text = "ISBN: ${details.isbn}",
+                        style = TextStyle(fontSize = 18.sp, color = Color.Black)
+                    )
+                }
+                else {
+                    Text(
+                        text = "Loading details...",
+                        style = TextStyle(fontSize = 18.sp, color = Color.Gray)
+                    )
+                }
                 HorizontalDivider(
                     color = Color.Gray,
                     thickness = 1.dp,

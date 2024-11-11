@@ -1,4 +1,4 @@
-package com.example.bookstorefrontend
+package com.example.bookstorefrontend.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,16 +22,30 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.bookstorefrontend.api.books.BookViewModel
+import com.example.bookstorefrontend.api.details.DetailsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
     modifier: Modifier
 ) {
+    val bookViewModel: BookViewModel = viewModel()
+    val detailsViewModel: DetailsViewModel = viewModel()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    var isSheetOpen by remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        bookViewModel.getBookList()
+    }
+
+    val onBookClick: (Int) -> Unit = { bookId ->
+        detailsViewModel.getDetailsById(bookId)
+        isSheetOpen = true
+    }
 
     ModalNavigationDrawer (
         drawerState = drawerState,
@@ -102,7 +117,7 @@ fun MainScreen(
         }
     ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                BookList()
+                BookList(bookList = bookViewModel.bookListResponse)
                 SnackbarHost(
                     hostState = snackbarHostState,
                     modifier = Modifier

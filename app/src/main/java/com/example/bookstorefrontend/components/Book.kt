@@ -1,4 +1,4 @@
-package com.example.bookstorefrontend
+package com.example.bookstorefrontend.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,18 +16,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bookstorefrontend.api.books.BookModel
 
 
 @Composable
 fun Book(
+    bookModel: BookModel,
     backgroundColor: Color,
-    title: String,
-    author: String,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .background(color = backgroundColor)
             .padding(16.dp)
             .size(width = 100.dp, height = 200.dp)
@@ -38,12 +37,12 @@ fun Book(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
-                text = title,
-                style = TextStyle(color = Color.White, fontSize = 24.sp)
+                text = bookModel.title,
+                style = TextStyle(color = Color.White, fontSize = 20.sp)
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             Text(
-                text = author,
+                text = bookModel.author,
                 style = TextStyle(color = Color.White, fontSize = 18.sp)
             )
         }
