@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bookstorefrontend.api.details.DetailsModel
+import com.example.bookstorefrontend.api.reviews.ReviewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,14 +31,13 @@ import kotlinx.coroutines.launch
 fun DetailsAndReviews(
     isOpen: Boolean,
     onClose: () -> Unit,
-    details: List<DetailsModel>
+    details: List<DetailsModel>,
+    reviews: List<ReviewModel>
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
-
-    val reviewsList = List(4) {index ->  "Review $index"}
 
     if (isOpen) {
         ModalBottomSheet(
@@ -54,7 +53,8 @@ fun DetailsAndReviews(
             ) {
                 Text(
                     text = "About the Book",
-                    style = TextStyle(fontSize = 24.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+                    style = TextStyle(fontSize = 24.sp, color = Color.Black, fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(start = 14.dp)
                 )
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
@@ -76,10 +76,9 @@ fun DetailsAndReviews(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(reviewsList) {
-                        Text(
-                            text = "Review",
-                            style = TextStyle(fontSize = 20.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+                    itemsIndexed(items = reviews){index, item ->
+                        Review(
+                            reviewModel = item
                         )
                     }
                 }

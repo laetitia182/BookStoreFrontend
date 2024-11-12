@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bookstorefrontend.api.books.BookViewModel
-import com.example.bookstorefrontend.api.details.DetailsViewModel
 import kotlinx.coroutines.launch
 
 @Composable

@@ -34,16 +34,19 @@ fun Book(
     ) {
         Column (
             modifier = Modifier.align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+
         ){
             Text(
                 text = bookModel.title,
-                style = TextStyle(color = Color.White, fontSize = 20.sp)
+                style = TextStyle(color = Color.White, fontSize = 18.sp),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(30.dp))
             Text(
                 text = bookModel.author,
-                style = TextStyle(color = Color.White, fontSize = 18.sp)
+                style = TextStyle(color = Color.White, fontSize = 14.sp),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
     }
