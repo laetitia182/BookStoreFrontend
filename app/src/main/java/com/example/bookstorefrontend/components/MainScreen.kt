@@ -32,19 +32,12 @@ fun MainScreen(
     modifier: Modifier
 ) {
     val bookViewModel: BookViewModel = viewModel()
-    val detailsViewModel: DetailsViewModel = viewModel()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    var isSheetOpen by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         bookViewModel.getBookList()
-    }
-
-    val onBookClick: (Int) -> Unit = { bookId ->
-        detailsViewModel.getDetailsById(bookId)
-        isSheetOpen = true
     }
 
     ModalNavigationDrawer (

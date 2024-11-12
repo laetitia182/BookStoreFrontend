@@ -1,5 +1,6 @@
 package com.example.bookstorefrontend.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,16 +33,10 @@ fun BookList(modifier: Modifier = Modifier, bookList: List<BookModel>) {
 
     LaunchedEffect(selectedBookId) {
         selectedBookId?.let {
+            println("Book id launchedeffect: $it")
             detailsViewModel.getDetailsById(it)
         }
     }
-
-    LaunchedEffect(detailsViewModel.detailsResponse) {
-        if(detailsViewModel.detailsResponse != null) {
-            isSheetOpen = true
-        }
-    }
-
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -56,24 +51,23 @@ fun BookList(modifier: Modifier = Modifier, bookList: List<BookModel>) {
                         bookModel = item,
                         backgroundColor = MaterialTheme.colorScheme.tertiary ,
                         onClick = {
-
                             isSheetOpen = true
                             selectedBookId = item.id
+                            println("Book id onclick: ${selectedBookId}")
+                            //println("Details: ${detailsViewModel.getDetailsById(item.id)}")
                         }
                     )
                 }
             }
         }
+
         DetailsAndReviews(
             isOpen = isSheetOpen,
-            onClose = {
-                isSheetOpen = false
-
-                      },
+            onClose = { isSheetOpen = false },
             details = detailsViewModel.detailsResponse
         )
 
-
+    println( "Response: ${detailsViewModel.detailsResponse} ")
 
 
 }

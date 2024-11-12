@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class DetailsViewModel: ViewModel() {
-    var detailsResponse: DetailsModel? by mutableStateOf(null)
+    var detailsResponse: List<DetailsModel> by mutableStateOf(listOf())
     var errorMessage: String by mutableStateOf("")
 
     fun getDetailsById(id: Int) {
