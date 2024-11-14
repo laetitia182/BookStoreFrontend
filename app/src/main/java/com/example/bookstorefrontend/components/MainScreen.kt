@@ -26,19 +26,36 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bookstorefrontend.api.books.BookViewModel
 import kotlinx.coroutines.launch
 
+
+/**
+ * A composable function that displays the main screen of the application, with a modal navigation drawer, a settings
+ * floating action button, and a list of books fetched from a ViewModel. Includes a snackbar notification and a dialog
+ * for requesting notification permissions.
+ *
+ * @param modifier The `Modifier` instance used to modify the layout or behavior of this composable.
+ */
 @Composable
 fun MainScreen(
     modifier: Modifier
 ) {
+    // ViewModel for managing book data
     val bookViewModel: BookViewModel = viewModel()
+
+    // Drawer state to control the opening and closing of the navigation drawer
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    // Coroutine scope to handle asynchronous tasks
     val scope = rememberCoroutineScope()
+
+    // State for managing snackbar notifications
     val snackbarHostState = remember { SnackbarHostState() }
 
+    // Launch effect to fetch the book list when this composable is initialized
     LaunchedEffect(Unit) {
         bookViewModel.getBookList()
     }
 
+    // Modal navigation drawer that includes settings and notifications options
     ModalNavigationDrawer (
         drawerState = drawerState,
         gesturesEnabled = true,
@@ -52,9 +69,12 @@ fun MainScreen(
                         fontWeight = FontWeight.Bold
                     )
                 )
+                // State for managing notification checkbox and dialog
                 var isChecked by remember { mutableStateOf(false) }
                 var showDialog by remember { mutableStateOf(false) }
                 var permissionRequested by remember { mutableStateOf(false) }
+
+                // Navigation item for toggling notifications with a checkbox
                 NavigationDrawerItem(
                     label = {
                         Row{
@@ -79,6 +99,7 @@ fun MainScreen(
                     selected = false,
                     onClick = {}
                 )
+                // Display dialog to confirm enabling notifications if checkbox is checked
                 if(showDialog) {
                     AlertDialog(
                         onDismissRequest = {showDialog = false},
@@ -108,13 +129,16 @@ fun MainScreen(
             }
         }
     ) {
+            // Main content layout
             Box(modifier = Modifier.fillMaxSize()) {
                 BookList(bookList = bookViewModel.bookListResponse)
+                // Snackbar host for displaying messages
                 SnackbarHost(
                     hostState = snackbarHostState,
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                 )
+                // Floating action button to open and close the drawer
                 FloatingActionButton(
                     onClick = {
                         scope.launch {
@@ -128,6 +152,7 @@ fun MainScreen(
                         .padding(36.dp),
                     containerColor = MaterialTheme.colorScheme.primary
                 ) {
+                    // Icon and label for the settings button
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {

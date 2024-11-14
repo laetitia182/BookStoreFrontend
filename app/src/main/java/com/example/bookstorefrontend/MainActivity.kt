@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import com.example.bookstorefrontend.components.MainScreen
 import com.example.bookstorefrontend.ui.theme.BookStoreFrontendTheme
 
+/**
+ * MainActivity is the main entry point for the application and responsible for setting up and displaying the UI.
+ */
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

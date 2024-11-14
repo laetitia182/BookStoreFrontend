@@ -18,6 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bookstorefrontend.api.books.BookModel
 
+/**
+ * A composable function that displays a book item with a title and author within a styled, clickable box.
+ *
+ * @param bookModel A data model representing the book to display, which includes the title and author.
+ * @param backgroundColor Background color for the box containing the book's details.
+ * @param onClick Lambda function that defines the action when the book item is clicked.
+ */
 
 @Composable
 fun Book(

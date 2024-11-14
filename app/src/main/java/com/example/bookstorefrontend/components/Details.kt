@@ -12,6 +12,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bookstorefrontend.api.details.DetailsModel
 
+
+/**
+ * A composable function that displays detailed information about a book, such as the author, year, type, publisher,
+ * language, and ISBN.
+ *
+ * @param detailsModel An instance of `DetailsModel` containing the book's details to display.
+ */
 @Composable
 fun Details( detailsModel: DetailsModel) {
     Box(

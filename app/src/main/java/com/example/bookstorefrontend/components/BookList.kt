@@ -22,16 +22,28 @@ import com.example.bookstorefrontend.api.books.BookModel
 import com.example.bookstorefrontend.api.details.DetailsViewModel
 import com.example.bookstorefrontend.api.reviews.ReviewViewModel
 
+/**
+ * A composable function that displays a list of books in a grid format. Each book item can be clicked to open
+ * a details and reviews sheet displaying additional information about the selected book.
+ *
+ * @param bookList A list of `BookModel` objects representing the books to be displayed in the grid.
+ */
 
 @Composable
-fun BookList(modifier: Modifier = Modifier, bookList: List<BookModel>) {
+fun BookList(bookList: List<BookModel>) {
 
 
+    // ViewModel instances for retrieving book details and reviews
     val detailsViewModel: DetailsViewModel = viewModel()
     val reviewViewModel: ReviewViewModel = viewModel()
+
+    // State to control the visibility of the details and reviews sheet
     var isSheetOpen by remember { mutableStateOf(false) }
+
+    // State to keep track of the selected book's ID
     var selectedBookId by remember { mutableStateOf<Int?>(null) }
 
+    // Fetches details and reviews when a book is selected
     LaunchedEffect(selectedBookId) {
         selectedBookId?.let {
             detailsViewModel.getDetailsById(it)
@@ -40,8 +52,10 @@ fun BookList(modifier: Modifier = Modifier, bookList: List<BookModel>) {
         }
     }
 
+    // Main container for the book list and details sheet
     Box(modifier = Modifier.fillMaxSize()) {
 
+            // Displays the list of books in a grid with custom padding and spacing
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(horizontal = 32.dp, vertical = 32.dp),
@@ -53,6 +67,7 @@ fun BookList(modifier: Modifier = Modifier, bookList: List<BookModel>) {
                         bookModel = item,
                         backgroundColor = MaterialTheme.colorScheme.tertiary ,
                         onClick = {
+                            // Opens the details and reviews sheet and sets the selected book ID
                             isSheetOpen = true
                             selectedBookId = item.id
                         }
@@ -61,6 +76,7 @@ fun BookList(modifier: Modifier = Modifier, bookList: List<BookModel>) {
             }
         }
 
+    // Displays the details and reviews sheet when a book is selected
         DetailsAndReviews(
             isOpen = isSheetOpen,
             onClose = { isSheetOpen = false },

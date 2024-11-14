@@ -16,6 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bookstorefrontend.api.reviews.ReviewModel
 
+
+/**
+ * A composable function that displays a single book review, including the reviewer's name, rating, and review text.
+ *
+ * @param reviewModel An instance of `ReviewModel` containing the review's details, such as reviewer name, star rating,
+ *                    and review text.
+ */
 @Composable
 fun Review( reviewModel: ReviewModel) {
     Box(

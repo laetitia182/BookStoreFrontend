@@ -26,6 +26,16 @@ import com.example.bookstorefrontend.api.details.DetailsModel
 import com.example.bookstorefrontend.api.reviews.ReviewModel
 import kotlinx.coroutines.launch
 
+
+/**
+ * A composable function that displays a modal bottom sheet with detailed information about a book and user reviews.
+ * The sheet can be toggled open or closed and contains sections for book details and user reviews.
+ *
+ * @param isOpen Boolean flag that controls whether the sheet is open or closed.
+ * @param onClose Lambda function that handles the action when the sheet is dismissed.
+ * @param details A list of `DetailsModel` objects containing the book's detailed information.
+ * @param reviews A list of `ReviewModel` objects containing user reviews for the book.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsAndReviews(
@@ -34,11 +44,15 @@ fun DetailsAndReviews(
     details: List<DetailsModel>,
     reviews: List<ReviewModel>
 ) {
+    // Coroutine scope for managing the state of the modal bottom sheet
     val scope = rememberCoroutineScope()
+
+    // State for the modal bottom sheet, configured to skip the partially expanded state
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
 
+    // Conditionally display the modal bottom sheet when isOpen is true
     if (isOpen) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -56,6 +70,7 @@ fun DetailsAndReviews(
                     style = TextStyle(fontSize = 24.sp, color = Color.Black, fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(start = 14.dp)
                 )
+                // LazyColumn for displaying book details
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -66,12 +81,14 @@ fun DetailsAndReviews(
                         )
                     }
                 }
+                // Divider between the details and reviews sections
                 HorizontalDivider(
                     color = Color.Gray,
                     thickness = 1.dp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                // LazyColumn for displaying user reviews
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -84,6 +101,7 @@ fun DetailsAndReviews(
                 }
             }
         }
+        // Launches the coroutine to open the modal bottom sheet when isOpen becomes true
         LaunchedEffect(isOpen) {
             scope.launch {
                 sheetState.show()
